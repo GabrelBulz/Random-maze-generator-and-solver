@@ -1,0 +1,7 @@
+This is the read me for this project.
+
+1.The main idea is to create a maze based on breath-first algo,
+and then some loops by deleating some of the walls
+2.The maze is created ona  matrix tipe and i'll try to convert
+that maze into a P3 picture
+3.Solve the maze using Dijkstra or maybe A*.
