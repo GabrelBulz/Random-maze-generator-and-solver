@@ -91,9 +91,9 @@ namespace Maze
                 walls[nr_wall] = -1;
         }
 
-        private void check_walls()
-        {
+        //private void check_walls()
+        //{
 
-        }
+        //}
     }
 }

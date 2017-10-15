@@ -18,6 +18,7 @@ namespace Maze
         int cols;//actual nr of cells per column
         Cell[][] grid;
         Random rnd = new Random();
+        int nr_nodes;
         
 
         public Maze_display_depth()
@@ -76,7 +77,7 @@ namespace Maze
 
             //Console.Write("picked wall "+test.ToString()+"\n");
 
-            int temp_cont = 0;
+            //int temp_cont = 0;
 
 
             while (stk.Count > 0)
@@ -155,19 +156,31 @@ namespace Maze
             //    for (int j = 0; j < cols; j++)
             //        Console.Write("R:" + grid[i][j].x.ToString() + " C:" + grid[i][j].y.ToString() + " top:" + grid[i][j].get_wall(0).ToString() + " bot:" + grid[i][j].get_wall(1).ToString() + " left:" + grid[i][j].get_wall(2).ToString() + " right:" + grid[i][j].get_wall(3).ToString() + "\n");
             Bitmap bit = new Bitmap(height, width);
+            
             create_bitmap(ref bit);
 
 
             ///color start box
-            int t = 125;
+            int t = 255;
             int q = 0;
             int w = 255;
             int e = 0;
 
-            bit.SetPixel(1, 2, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(1, start_col * 3 + 1, Color.FromArgb(t, q, w, e));
             bit.SetPixel(1, start_col * 3 + 2, Color.FromArgb(t, q, w, e));
-            bit.SetPixel (2, start_col * 3 + 1, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(2, start_col * 3 + 1, Color.FromArgb(t, q, w, e));
             bit.SetPixel(2, start_col * 3 + 2, Color.FromArgb(t, q, w, e));
+
+            ///set finish colour
+            t = 255;
+            q = 255;
+            w = 0;
+            e = 0; 
+
+            bit.SetPixel(height-3, width - 3, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(height-2, width - 3, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(height-2, width - 2, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(height-3, width - 2, Color.FromArgb(t, q, w, e));
 
             //for (int temp1 = 0; temp1 < height; temp1++)
             //    for (int temp2 = 0; temp2 < width; temp2++)
@@ -181,6 +194,9 @@ namespace Maze
             bit.Save("D:\\Img_maze\\Img.png");
 
             pictureBox1.Image = bit;
+
+            Console.Write(nr_nodes.ToString()+"\n");
+            Dijkstra_solve dij = new Dijkstra_solve(rows, cols, grid, nr_nodes);
 
         }
 
@@ -262,6 +278,16 @@ namespace Maze
                     wall[cont++] = i;
         }
 
+
+        private void get_unavailable_walls_of_cell(int[] wall, ref int cont, Cell x)
+        {
+            cont = 0;
+
+            for (int i = 0; i < 4; i++)
+                if (x.get_wall(i) == 0 || x.get_wall(i) == 1)
+                    wall[cont++] = i;
+        }
+
         private int get_random_wall(int []wall, int cont)
         {
             if (cont == 0)
@@ -275,6 +301,8 @@ namespace Maze
 
         private void create_bitmap(ref Bitmap bit)
         {
+
+            nr_nodes = 0;
 
             for (int i = 0; i < rows; i++)
                 for (int j = 0; j < cols; j++)
@@ -335,6 +363,79 @@ namespace Maze
                         bit.SetPixel(i * 3 + 2, j * 3 + 1, Color.FromArgb(a, r, g, b));
                         bit.SetPixel(i * 3 + 2, j * 3 + 2, Color.FromArgb(a, r, g, b));
                     }
+                }
+
+            int[] wall = new int[4];
+            int size_wall_arr=0;
+
+            //Cell test_1 = new Cell(1001, 1001);
+            //test_1.block_wall(0);
+            //test_1.block_wall(2);
+
+            //Boolean ok = false;
+
+            //get_unavailable_walls_of_cell(wall, ref size_wall_arr, test_1);
+
+            //for (int k = 0; k < size_wall_arr - 1; k++)
+            //    for (int z = k + 1; z < size_wall_arr; z++)
+            //    {
+            //        if (Math.Abs(wall[z] - wall[k]) >= 2)
+            //            ok = true;
+            //        Console.Write(wall[k].ToString() + " " + wall[z].ToString() + "\n");
+            //    }
+
+            //Console.Write(ok.ToString());
+
+
+
+            for (int i = 0; i < rows; i++)
+                for (int j = 0; j < cols; j++)
+                {
+                    Boolean ok = false;
+
+                    get_unavailable_walls_of_cell(wall, ref size_wall_arr, grid[i][j]);
+
+                    for (int k = 0; k < size_wall_arr - 1; k++)
+                        for (int z = k + 1; z < size_wall_arr; z++)
+                            if (Math.Abs(wall[z] - wall[k]) >= 2)
+                                ok = true;
+
+                    ///caz special 1
+                    for (int k = 0; k < size_wall_arr; k++)
+                        if (wall[k] == 1 && k < size_wall_arr - 1)
+                            if (wall[k + 1] == 2)
+                                ok = true;
+
+                    //caz 2
+                    if (size_wall_arr == 1)
+                        ok = true;
+
+                    ///// caz special 2
+                    //for (int k = 0; k < size_wall_arr; k++)
+                    //    if (wall[k] == 1)
+                    //        for(int z=k+1; z < size_wall_arr; z++)
+                    //            if(wall[z] == )
+
+
+
+                    if (ok == true)
+                    {
+
+                        int a = 255;
+                        int r = 0;
+                        int g = 0;
+                        int b = 0;
+
+                        bit.SetPixel(i * 3 + 1, j * 3 + 1, Color.FromArgb(a, r, g, b));
+                        bit.SetPixel(i * 3 + 1, j * 3 + 2, Color.FromArgb(a, r, g, b));
+                        bit.SetPixel(i * 3 + 2, j * 3 + 1, Color.FromArgb(a, r, g, b));
+                        bit.SetPixel(i * 3 + 2, j * 3 + 2, Color.FromArgb(a, r, g, b));
+
+                        nr_nodes++;
+
+                        Console.Write(nr_nodes.ToString() + "\n");
+                    }
+
                 }
 
         }
