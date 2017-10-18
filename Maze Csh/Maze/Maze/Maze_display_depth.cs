@@ -165,6 +165,8 @@ namespace Maze
             //            if (bit.GetPixel(temp1 - 1, temp2) == bit.GetPixel(temp1, temp2 - 1))
             //                bit.SetPixel(temp1, temp2, bit.GetPixel(temp1 - 1, temp2));
 
+
+            //REZOLVARE--------------------------------------------------------------------
             Dijkstra_solve dij = new Dijkstra_solve(rows, cols, grid, nr_nodes,start_col);
 
             Stack<KeyValuePair<int, int>> road = dij.get_road();
@@ -173,12 +175,10 @@ namespace Maze
             int q = 0;
             int w = 0;
             int e = 255;
-
+            
             while (road.Count > 0)
             {
                 KeyValuePair<int, int> temp = road.Pop();
-
-                Console.Write(temp.Key + " " + temp.Value + "/n");
 
                 int x_temp = temp.Key;
                 int y_temp = temp.Value;
@@ -188,6 +188,8 @@ namespace Maze
                 bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 1, Color.FromArgb(t, q, w, e));
                 bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 2, Color.FromArgb(t, q, w, e));
             }
+            //END HERE--------------------------------------------------------------------
+
             ///color start box
             t = 255;
             q = 0;
@@ -210,16 +212,23 @@ namespace Maze
             bit.SetPixel(height - 2, width - 2, Color.FromArgb(t, q, w, e));
             bit.SetPixel(height - 3, width - 2, Color.FromArgb(t, q, w, e));
 
+            if(height<pictureBox1.Height && width<pictureBox1.Width)
+            {   ///INTERPOLATION IF FOR HOW TO MAXIMIZE THE BITMAP IT WAS USING BLEN WUHC BLEND WITHE WITH BLACK -> GREY
+                Bitmap resized = new Bitmap(bit.Height * (int)(pictureBox1.Height/height), bit.Width * (int)(pictureBox1.Width / width));
+                Graphics g = Graphics.FromImage(resized);
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                g.DrawImage(bit, 0, 0, bit.Height * (int)(pictureBox1.Height / height), bit.Width * (int)(pictureBox1.Width / width));
+                bit = new Bitmap(resized.Height, resized.Width);
+                bit = resized;
+            }
+
 
             bit.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
 
-            bit.Save("D:\\Img_maze\\Img.png");
+            bit.Save("D:\\Img_maze\\Img_2.png");
 
             pictureBox1.Image = bit;
-            
-           
-
         }
 
 
@@ -464,6 +473,11 @@ namespace Maze
         private void button1_Click(object sender, EventArgs e)
         {
            // MessageBox.Show((grid[1][1].y).ToString());
+        }
+
+        private void Maze_display_depth_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(1);
         }
     }
 }
