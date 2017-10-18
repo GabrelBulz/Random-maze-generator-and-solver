@@ -173,20 +173,86 @@ namespace Maze
 
             int t = 255;
             int q = 0;
-            int w = 0;
-            int e = 255;
+            int w = 255;
+            int e = 0;
+
+            double rate_of_change_colour = (double)255 / road.Count;
+            double cont_rate_change = rate_of_change_colour;
+
+            KeyValuePair<int, int> temp1 = road.Pop();
             
             while (road.Count > 0)
             {
                 KeyValuePair<int, int> temp = road.Pop();
 
-                int x_temp = temp.Key;
-                int y_temp = temp.Value;
+                int x1 = temp.Key;
+                int x2 = temp1.Key;
+                int y1 = temp.Value;
+                int y2 = temp1.Value;
 
-                bit.SetPixel(x_temp * 3 + 1, y_temp * 3 + 1, Color.FromArgb(t, q, w, e));
-                bit.SetPixel(x_temp * 3 + 1, y_temp * 3 + 2, Color.FromArgb(t, q, w, e));
-                bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 1, Color.FromArgb(t, q, w, e));
-                bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 2, Color.FromArgb(t, q, w, e));
+                if(x1 == x2)
+                {
+                    for(int k=0; k<Math.Abs(y1-y2); k++)
+                    {
+                        bit.SetPixel(x1 * 3 + 1, (Math.Min(y1, y2) + k) * 3 + 1, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel(x1 * 3 + 1, (Math.Min(y1, y2) + k) * 3 + 2, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel(x1 * 3 + 2, (Math.Min(y1, y2) + k) * 3 + 1, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel(x1 * 3 + 2, (Math.Min(y1 ,y2) + k) * 3 + 2, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel(x1 * 3 + 1, (Math.Min(y1, y2) + k) * 3 + 3, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel(x1 * 3 + 2, (Math.Min(y1, y2) + k) * 3 + 3, Color.FromArgb(t, q, w, e));
+                    }
+                    bit.SetPixel(x1 * 3 + 1, Math.Max(y1, y2)  * 3 + 1, Color.FromArgb(t, q, w, e));
+                    bit.SetPixel(x1 * 3 + 2, Math.Max(y1, y2)  * 3 + 2, Color.FromArgb(t, q, w, e));
+                    bit.SetPixel(x1 * 3 + 1, Math.Max(y1, y2) * 3 + 2, Color.FromArgb(t, q, w, e));
+                    bit.SetPixel(x1 * 3 + 2, Math.Max(y1, y2) * 3 + 1, Color.FromArgb(t, q, w, e));
+                }
+                else
+                {
+                    for (int k = 0; k < Math.Abs(x1-x2); k++)
+                    {
+                        bit.SetPixel((Math.Min(x1, x2) + k) * 3 + 1, y2 * 3 + 1, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel((Math.Min(x1, x2) + k) * 3 + 1, y2 * 3 + 2, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel((Math.Min(x1, x2) + k) * 3 + 2, y2 * 3 + 1, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel((Math.Min(x1, x2) + k) * 3 + 2, y2 * 3 + 2, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel((Math.Min(x1, x2) + k) * 3 + 3, y2 * 3 + 2, Color.FromArgb(t, q, w, e));
+                        bit.SetPixel((Math.Min(x1, x2) + k) * 3 + 3, y2 * 3 + 1, Color.FromArgb(t, q, w, e));
+                    }
+
+                }
+
+
+                temp1 = temp;
+
+                if (rate_of_change_colour > 1)
+                {
+                    q += (int)rate_of_change_colour;
+                    w -= (int)rate_of_change_colour;
+                }
+                else
+                {
+                    if (cont_rate_change > 1)
+                        cont_rate_change %= 1;
+                    cont_rate_change += rate_of_change_colour;
+                    q += (int)cont_rate_change;
+                    w -= (int)cont_rate_change;
+                }
+
+                //rate_of_change_colour += rate_of_change_colour;
+                if (q > 255)
+                    q = 255;
+                if (w < 0)
+                    w = 0;
+
+
+
+
+                //int x_temp = temp.Key;
+                //int y_temp = temp.Value;
+
+                //bit.SetPixel(x_temp * 3 + 1, y_temp * 3 + 1, Color.FromArgb(t, q, w, e));
+                //bit.SetPixel(x_temp * 3 + 1, y_temp * 3 + 2, Color.FromArgb(t, q, w, e));
+                //bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 1, Color.FromArgb(t, q, w, e));
+                //bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 2, Color.FromArgb(t, q, w, e));
             }
             //END HERE--------------------------------------------------------------------
 
@@ -226,7 +292,7 @@ namespace Maze
             bit.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
 
-            bit.Save("D:\\Img_maze\\Img_2.png");
+            bit.Save("D:\\Img_maze\\Img.png");
 
             pictureBox1.Image = bit;
         }

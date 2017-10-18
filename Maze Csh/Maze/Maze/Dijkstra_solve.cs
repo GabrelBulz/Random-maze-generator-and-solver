@@ -249,12 +249,15 @@ namespace Maze
                 cell_dijk[cont_noduri].set_dist_to_neighbour(dist_dr, 3);
 
                 cont_noduri++;
+
+                if (temp.x == rows - 1 && temp.y == cols - 1)
+                    break;
             }
         }
 
         private void create_cost()
         {
-            for (int i = 0; i < nr_nodes; i++)
+            for (int i = 0; i < cont_noduri; i++)
             {
                 cell_dijk[i].visit = 0;
                 cell_dijk[i].cost_from = new KeyValuePair<int, int>(-1, -1);
@@ -284,7 +287,7 @@ namespace Maze
                                     Boolean ok = new Boolean();
                                     ok = true;
 
-                                    for(int j=0; j<nr_nodes && ok; j++)
+                                    for(int j=0; j<cont_noduri && ok; j++)
                                         if(cell_dijk[j].x == temp.get_cell_neighbour(0).Key && cell_dijk[j].y == temp.get_cell_neighbour(0).Value)
                                         {
                                             if (cell_dijk[j].get_cur_dist() > temp.get_cur_dist() + temp.get_dist_to_neighbour(0))
@@ -303,7 +306,7 @@ namespace Maze
                                     Boolean ok = new Boolean();
                                     ok = true;
 
-                                    for (int j = 0; j < nr_nodes && ok; j++)
+                                    for (int j = 0; j < cont_noduri && ok; j++)
                                         if (cell_dijk[j].x == temp.get_cell_neighbour(1).Key && cell_dijk[j].y == temp.get_cell_neighbour(1).Value)
                                         {
                                             if (cell_dijk[j].get_cur_dist() > temp.get_cur_dist() + temp.get_dist_to_neighbour(1))
@@ -322,7 +325,7 @@ namespace Maze
                                     Boolean ok = new Boolean();
                                     ok = true;
 
-                                    for (int j = 0; j < nr_nodes && ok; j++)
+                                    for (int j = 0; j < cont_noduri && ok; j++)
                                         if (cell_dijk[j].x == temp.get_cell_neighbour(2).Key && cell_dijk[j].y == temp.get_cell_neighbour(2).Value)
                                         {
                                             if (cell_dijk[j].get_cur_dist() > temp.get_cur_dist() + temp.get_dist_to_neighbour(2))
@@ -341,7 +344,7 @@ namespace Maze
                                     Boolean ok = new Boolean();
                                     ok = true;
 
-                                    for (int j = 0; j < nr_nodes && ok; j++)
+                                    for (int j = 0; j < cont_noduri && ok; j++)
                                         if (cell_dijk[j].x == temp.get_cell_neighbour(3).Key && cell_dijk[j].y == temp.get_cell_neighbour(3).Value)
                                         {
                                             if (cell_dijk[j].get_cur_dist() > temp.get_cur_dist() + temp.get_dist_to_neighbour(3))
@@ -368,6 +371,9 @@ namespace Maze
                     que.Enqueue(vecin_st);
                 if (vecin_dr != null && vecin_dr.visit != 1)
                     que.Enqueue(vecin_dr);
+
+                if (temp.x == rows - 1 && temp.y == cols - 1)
+                    break;
             }
         }
 
@@ -375,7 +381,7 @@ namespace Maze
         {
             Cell_Dijkstra temp = null;
 
-            for(int i=0; i<nr_nodes; i++)
+            for(int i=0; i< cont_noduri; i++)
                 if(cell_dijk[i].x == rows-1 && cell_dijk[i].y == cols-1)
                 {
                     temp = cell_dijk[i];
@@ -393,7 +399,7 @@ namespace Maze
                 ok = true;
 
                 int i;
-                for (i = 0; i < nr_nodes && ok; i++)
+                for (i = 0; i < cont_noduri && ok; i++)
                     if (cell_dijk[i].x == temp.cost_from.Key && cell_dijk[i].y == temp.cost_from.Value)
                         ok = false;
 
