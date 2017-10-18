@@ -159,12 +159,40 @@ namespace Maze
             
             create_bitmap(ref bit);
 
+            //for (int temp1 = 0; temp1 < height; temp1++)
+            //    for (int temp2 = 0; temp2 < width; temp2++)
+            //        if (temp1 > 0 && temp2 > 0)
+            //            if (bit.GetPixel(temp1 - 1, temp2) == bit.GetPixel(temp1, temp2 - 1))
+            //                bit.SetPixel(temp1, temp2, bit.GetPixel(temp1 - 1, temp2));
 
-            ///color start box
+            Dijkstra_solve dij = new Dijkstra_solve(rows, cols, grid, nr_nodes,start_col);
+
+            Stack<KeyValuePair<int, int>> road = dij.get_road();
+
             int t = 255;
             int q = 0;
-            int w = 255;
-            int e = 0;
+            int w = 0;
+            int e = 255;
+
+            while (road.Count > 0)
+            {
+                KeyValuePair<int, int> temp = road.Pop();
+
+                Console.Write(temp.Key + " " + temp.Value + "/n");
+
+                int x_temp = temp.Key;
+                int y_temp = temp.Value;
+
+                bit.SetPixel(x_temp * 3 + 1, y_temp * 3 + 1, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(x_temp * 3 + 1, y_temp * 3 + 2, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 1, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(x_temp * 3 + 2, y_temp * 3 + 2, Color.FromArgb(t, q, w, e));
+            }
+            ///color start box
+            t = 255;
+            q = 0;
+            w = 255;
+            e = 0;
 
             bit.SetPixel(1, start_col * 3 + 1, Color.FromArgb(t, q, w, e));
             bit.SetPixel(1, start_col * 3 + 2, Color.FromArgb(t, q, w, e));
@@ -175,18 +203,13 @@ namespace Maze
             t = 255;
             q = 255;
             w = 0;
-            e = 0; 
+            e = 0;
 
-            bit.SetPixel(height-3, width - 3, Color.FromArgb(t, q, w, e));
-            bit.SetPixel(height-2, width - 3, Color.FromArgb(t, q, w, e));
-            bit.SetPixel(height-2, width - 2, Color.FromArgb(t, q, w, e));
-            bit.SetPixel(height-3, width - 2, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(height - 3, width - 3, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(height - 2, width - 3, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(height - 2, width - 2, Color.FromArgb(t, q, w, e));
+            bit.SetPixel(height - 3, width - 2, Color.FromArgb(t, q, w, e));
 
-            //for (int temp1 = 0; temp1 < height; temp1++)
-            //    for (int temp2 = 0; temp2 < width; temp2++)
-            //        if (temp1 > 0 && temp2 > 0)
-            //            if (bit.GetPixel(temp1 - 1, temp2) == bit.GetPixel(temp1, temp2 - 1))
-            //                bit.SetPixel(temp1, temp2, bit.GetPixel(temp1 - 1, temp2));
 
             bit.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
@@ -194,9 +217,8 @@ namespace Maze
             bit.Save("D:\\Img_maze\\Img.png");
 
             pictureBox1.Image = bit;
-
-            Console.Write(nr_nodes.ToString()+"\n");
-            Dijkstra_solve dij = new Dijkstra_solve(rows, cols, grid, nr_nodes);
+            
+           
 
         }
 
@@ -426,14 +448,13 @@ namespace Maze
                         int g = 0;
                         int b = 0;
 
-                        bit.SetPixel(i * 3 + 1, j * 3 + 1, Color.FromArgb(a, r, g, b));
-                        bit.SetPixel(i * 3 + 1, j * 3 + 2, Color.FromArgb(a, r, g, b));
-                        bit.SetPixel(i * 3 + 2, j * 3 + 1, Color.FromArgb(a, r, g, b));
-                        bit.SetPixel(i * 3 + 2, j * 3 + 2, Color.FromArgb(a, r, g, b));
+                        //bit.SetPixel(i * 3 + 1, j * 3 + 1, Color.FromArgb(a, r, g, b));
+                        //bit.SetPixel(i * 3 + 1, j * 3 + 2, Color.FromArgb(a, r, g, b));
+                        //bit.SetPixel(i * 3 + 2, j * 3 + 1, Color.FromArgb(a, r, g, b));
+                        //bit.SetPixel(i * 3 + 2, j * 3 + 2, Color.FromArgb(a, r, g, b));
 
                         nr_nodes++;
-
-                        Console.Write(nr_nodes.ToString() + "\n");
+                        
                     }
 
                 }

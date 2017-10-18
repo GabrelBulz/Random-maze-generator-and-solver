@@ -14,6 +14,8 @@ namespace Maze
         private KeyValuePair<int, int>[] cell_neighbour;
         private int[] dist_to_neighbour;
         private int cur_dist;
+        public int visit { get; set; }
+        public KeyValuePair<int,int> cost_from { get; set; }
 
         public Cell_Dijkstra(int a, int b)
         {
