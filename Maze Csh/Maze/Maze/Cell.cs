@@ -21,8 +21,10 @@ namespace Maze
         //1-down
         //2-left
         //3-right
-        public static int rows { get; set;}
+        public static int rows { get; set; }
         public static int cols { get; set; }
+        public KeyValuePair<int, int> son_of{ get; set; }
+
 
 
         public Cell()
@@ -34,6 +36,8 @@ namespace Maze
 
             for (int i = 0; i < 4; i++)
                 walls[i] = 1;
+
+            son_of = new KeyValuePair<int, int>(-1, -1);
         }
 
 

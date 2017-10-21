@@ -39,14 +39,6 @@ namespace Maze
             fill_cell_dijkstra();
             create_cost();
             create_road();
-
-            //while (road.Count > 0)
-            //{
-            //    KeyValuePair<int, int> temp;
-            //    temp = road.Pop();
-
-            //    Console.Write(temp.Key + " " + temp.Value + "\n");
-            //}
         }
 
 

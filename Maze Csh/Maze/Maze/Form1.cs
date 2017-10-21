@@ -38,7 +38,7 @@ namespace Maze
             //////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             if (a.Length<=0 || b.Length<=0)
-                MessageBox.Show("muie la saraci");
+                MessageBox.Show("You should enter a bigger size than 0");
             else
             {
                 rows = Convert.ToInt32(a);
@@ -58,6 +58,35 @@ namespace Maze
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            string a = textBox1.Text;
+            string b = textBox2.Text;
+
+
+            ///////////NU UITA SA IMPLEMENTEZI PT CAZU IN CARE BAGA DIM PREA MICI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            //////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            if (a.Length <= 0 || b.Length <= 0)
+                MessageBox.Show("You should enter a bigger size than 0");
+            else
+            {
+                rows = Convert.ToInt32(a);
+                cols = Convert.ToInt32(b);
+
+
+
+
+                Form form2 = new Maze_diplay_prim();
+                form2.Show();
+                form2.Focus();
+                this.Hide();
+            }
+
 
         }
     }

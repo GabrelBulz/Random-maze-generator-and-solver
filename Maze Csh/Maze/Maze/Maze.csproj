@@ -54,6 +54,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Maze_diplay_prim.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Maze_diplay_prim.Designer.cs">
+      <DependentUpon>Maze_diplay_prim.cs</DependentUpon>
+    </Compile>
     <Compile Include="Maze_display_depth.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Maze_diplay_prim.resx">
+      <DependentUpon>Maze_diplay_prim.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Maze_display_depth.resx">
       <DependentUpon>Maze_display_depth.cs</DependentUpon>
