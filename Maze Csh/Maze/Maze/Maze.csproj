@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="Cell.cs" />
     <Compile Include="Cell_Dijkstra.cs" />
+    <Compile Include="Cell_Depth.cs" />
+    <Compile Include="Depth_solve.cs" />
     <Compile Include="Dijkstra_solve.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
