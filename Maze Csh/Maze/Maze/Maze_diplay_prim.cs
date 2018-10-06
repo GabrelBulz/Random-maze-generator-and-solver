@@ -48,10 +48,10 @@ namespace Maze
             Bitmap bit = new Bitmap(height, width);
             create_bitmap(ref bit);
             //REZOLVARE--------------------------------------------------------------------
-            //Depth_solve depth_solve = new Depth_solve(rows, cols, grid, nr_nodes, start_col);
-            Dijkstra_solve dij = new Dijkstra_solve(rows, cols, grid, nr_nodes, start_col);
+            Depth_solve depth_solve = new Depth_solve(rows, cols, grid, nr_nodes, start_col);
+            //Dijkstra_solve dij = new Dijkstra_solve(rows, cols, grid, nr_nodes, start_col);
 
-            Stack<KeyValuePair<int, int>> road = dij.get_road();
+            Stack<KeyValuePair<int, int>> road = depth_solve.get_road();
 
             int t = 255;
             int q = 0;

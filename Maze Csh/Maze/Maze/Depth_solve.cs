@@ -259,6 +259,8 @@ namespace Maze
 
             stk_depth.Push(get_cell_from_list(0,start_col));
 
+            int contor = 0;
+
             while (stk_depth.Count != 0)
             {
                 Cell_Depth temp_cell = stk_depth.Pop();
@@ -304,18 +306,19 @@ namespace Maze
 
         public Cell_Depth get_cell_from_list(int i, int j)
         {
-            Console.WriteLine(cell_depth.Length);
-
-            for (int cont = 0; cont < cell_depth.Length; cont++)
+            for (int cont = 0; cont < cont_noduri; cont++)
                 if (cell_depth[cont].x == i && cell_depth[cont].y == j)
                     return cell_depth[cont];
 
-            return null;
+            
+            Cell_Depth null_cell = new Cell_Depth(-1, -1);
+            null_cell.visit = 1;
+            return null_cell;
         }
 
         public void initiate_visit_list_cell()
         {
-            for (int i = 0; i < cell_depth.Length; i++)
+            for (int i = 0; i < cont_noduri; i++)
                 cell_depth[i].visit = 0;
         }
 
