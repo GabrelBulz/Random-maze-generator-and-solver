@@ -127,6 +127,9 @@ namespace Maze
             Depth_solve depth_solve = new Depth_solve(rows, cols, grid, nr_nodes, start_col);
             //Dijkstra_solve dij = new Dijkstra_solve(rows, cols, grid, nr_nodes,start_col);
 
+            if (!depth_solve.solved)
+                System.Windows.Forms.MessageBox.Show("The maze wasn't solved");
+
             Stack<KeyValuePair<int, int>> road = depth_solve.get_road();
 
             int t = 255;
@@ -215,15 +218,34 @@ namespace Maze
             bit.SetPixel(2, start_col * 3 + 2, Color.FromArgb(t, q, w, e));
 
             ///set finish colour
-            t = 255;
-            q = 255;
-            w = 0;
-            e = 0;
+            
+            if(depth_solve.solved)
+            {
+                t = 255;
+                q = 255;
+                w = 0;
+                e = 0;
 
-            bit.SetPixel(height - 3, width - 3, Color.FromArgb(t, q, w, e));
-            bit.SetPixel(height - 2, width - 3, Color.FromArgb(t, q, w, e));
-            bit.SetPixel(height - 2, width - 2, Color.FromArgb(t, q, w, e));
-            bit.SetPixel(height - 3, width - 2, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(height - 3, width - 3, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(height - 2, width - 3, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(height - 2, width - 2, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(height - 3, width - 2, Color.FromArgb(t, q, w, e));
+            }
+            else
+            {
+                t = 255;
+                q = 255;
+                w = 0;
+                e = 0;
+
+                KeyValuePair<int, int> false_finish = new KeyValuePair<int, int>(depth_solve.cell_case_lab_hasnt_solve.x, depth_solve.cell_case_lab_hasnt_solve.y);
+
+                bit.SetPixel(false_finish.Key * 3 + 1, false_finish.Value * 3 + 1, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(false_finish.Key * 3 + 1, false_finish.Value * 3 + 2, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(false_finish.Key * 3 + 2, false_finish.Value * 3 + 1, Color.FromArgb(t, q, w, e));
+                bit.SetPixel(false_finish.Key * 3 + 2, false_finish.Value * 3 + 2, Color.FromArgb(t, q, w, e));
+            }
+
 
             if(height<pictureBox1.Height && width<pictureBox1.Width)
             {   ///INTERPOLATION IF FOR HOW TO MAXIMIZE THE BITMAP IT WAS USING BLEN WUHC BLEND WITHE WITH BLACK -> GREY

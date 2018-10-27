@@ -19,11 +19,15 @@ namespace Maze
         private Stack<KeyValuePair<int, int>> road;
         private Stack<Cell_Depth> stk_depth;
 
+        public Cell_Depth cell_case_lab_hasnt_solve;
+
         public Boolean solved;
 
 
         public Depth_solve(int r, int c, Cell[][] gr, int nr_nd, int str)
         {
+            cell_case_lab_hasnt_solve = null;
+
             solved = false;
             rows = r;
             cols = c;
@@ -255,35 +259,83 @@ namespace Maze
 
         public void solve()
         {
-            stk_depth = new Stack<Cell_Depth>();
+            ///set path, now its set for down, left, right, up
+            int[] path =new int[] { 3, 1, 2, 0 };
 
-            stk_depth.Push(get_cell_from_list(0,start_col));
+            Console.Write(path.ToString());
 
-            int contor = 0;
 
-            while (stk_depth.Count != 0)
+
+            Boolean has_more_moves = true;
+
+            Cell_Depth current_cell = get_cell_from_list(0, start_col);
+           
+
+            while (has_more_moves)
             {
-                Cell_Depth temp_cell = stk_depth.Pop();
-                temp_cell.visit = 1;
-
-                if (temp_cell.x == rows - 1 && temp_cell.y == cols - 1)
+                if (current_cell.x == rows - 1 && current_cell.y == cols - 1)
                 {
                     solved = true;
                     break;
                 }
 
+                KeyValuePair<int, int>[] arr_neighbor = current_cell.get_neighbor_arr();
+                current_cell.visit = 1;
 
-                KeyValuePair<int, int>[] arr_neighbor = temp_cell.get_neighbor_arr();
+                Boolean has_switched = false;
 
-
+                Console.WriteLine(current_cell.x.ToString() + " " + current_cell.y.ToString());
                 for (int i = 0; i < arr_neighbor.Length; i++)
-                    if (arr_neighbor[i].Key != -1 && get_cell_from_list(arr_neighbor[i].Key, arr_neighbor[i].Value).visit != 1)
+                    Console.WriteLine("neighbour " + i.ToString() + " " + arr_neighbor[i].Key.ToString() + " " + arr_neighbor[i].Value.ToString() + " " + get_cell_from_list(arr_neighbor[i].Key, arr_neighbor[i].Value).visit.ToString());
+
+                for (int i = 0; i < path.Length && has_switched == false; i++)
+                {
+                    if (arr_neighbor[path[i]].Key != -1 && get_cell_from_list(arr_neighbor[path[i]].Key, arr_neighbor[path[i]].Value).visit != 1)
                     {
-                        Cell_Depth neighbor_to_be_added = get_cell_from_list(arr_neighbor[i].Key, arr_neighbor[i].Value);
-                        neighbor_to_be_added.added_by = new KeyValuePair<int, int>(temp_cell.x, temp_cell.y);
-                        stk_depth.Push(neighbor_to_be_added);
+                        Cell_Depth next_cell = get_cell_from_list(arr_neighbor[path[i]].Key, arr_neighbor[path[i]].Value);
+                        next_cell.added_by = new KeyValuePair<int, int>(current_cell.x, current_cell.y);
+                        current_cell = next_cell;
+                        has_switched = true;
                     }
+                }
+
+                //means that the current cell could not be switched because all the neighbour are unavailable
+                if (has_switched == false)
+                {
+                    has_more_moves = false;
+                    cell_case_lab_hasnt_solve = current_cell;
+                }
             }
+
+            //stk_depth = new Stack<Cell_Depth>();
+
+            //stk_depth.Push(get_cell_from_list(0,start_col));
+
+            //int contor = 0;
+
+            //while (stk_depth.Count != 0)
+            //{
+            //    Cell_Depth temp_cell = stk_depth.Pop();
+            //    temp_cell.visit = 1;
+
+            //    if (temp_cell.x == rows - 1 && temp_cell.y == cols - 1)
+            //    {
+            //        solved = true;
+            //        break;
+            //    }
+
+
+            //    KeyValuePair<int, int>[] arr_neighbor = temp_cell.get_neighbor_arr();
+
+
+            //    for (int i = 0; i < arr_neighbor.Length; i++)
+            //        if (arr_neighbor[i].Key != -1 && get_cell_from_list(arr_neighbor[i].Key, arr_neighbor[i].Value).visit != 1)
+            //        {
+            //            Cell_Depth neighbor_to_be_added = get_cell_from_list(arr_neighbor[i].Key, arr_neighbor[i].Value);
+            //            neighbor_to_be_added.added_by = new KeyValuePair<int, int>(temp_cell.x, temp_cell.y);
+            //            stk_depth.Push(neighbor_to_be_added);
+            //        }
+            //}
         }
 
         public void calculate_road()
@@ -300,6 +352,20 @@ namespace Maze
                         break;
 
                     current = get_cell_from_list(current.added_by.Key, current.added_by.Value);
+                }
+            }
+            else
+            {
+                Cell_Depth false_finish = cell_case_lab_hasnt_solve;
+
+                while (true)
+                {
+                    road.Push(new KeyValuePair<int, int>(false_finish.x, false_finish.y));
+
+                    if ((false_finish.added_by).Key == -1)
+                        break;
+
+                    false_finish = get_cell_from_list(false_finish.added_by.Key, false_finish.added_by.Value);
                 }
             }
         }
